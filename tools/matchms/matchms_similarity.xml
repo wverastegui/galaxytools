@@ -41,7 +41,6 @@
             "$similarity_scores" \
             "$similarity_matches" \
             "$metadata_field_name" \
-            "$matching_type"
         </configfile>
     </configfiles>
 
@@ -56,13 +55,39 @@
                        help="Reference mass spectra to match against as library."/>
             </when>
         </conditional>
-        <param label="Similarity metric" name="similarity_metric" type="select" display="radio"
-               help="Similarity metric to use for score computation.">
-            <option value="CosineGreedy" selected="true">CosineGreedy</option>
-            <option value="CosineHungarian">CosineHungarian</option>
-            <option value="ModifiedCosine">ModifiedCosine</option>
-            <option value="MetadataMatch">MetadataMatch</option>
-        </param>
+
+        <conditional name="addmetadata">
+            <param label="Similarity metric" name="similarity_metric" type="select" display="radio"
+                   help="Similarity metric to use for score computation.">
+                <option value="CosineGreedy" selected="true">CosineGreedy</option>
+                <option value="CosineHungarian">CosineHungarian</option>
+                <option value="ModifiedCosine">ModifiedCosine</option>
+                <option value="MetadataMatch">MetadataMatch</option>
+            </param>
+            <when value="MetadataMatch">
+                <conditional name="metadata_field">
+                    <param label="Metadata field name" name="metadata_field_name" type="select" display="radio"
+                           help="Field name in metadata to be compared.">
+                        <option value="SMILES" selected="true">SMILES</option>
+                        <option value="InChI">InChI</option>
+                        <option value="Formula">Formula</option>
+                        <option value="Precursor MZ">Precursor MZ</option>
+                        <option value="RetentionTime">Retention Time</option>
+                        <option value="RetentionIndex">Retention Index</option>                        
+                    </param>
+                    <when value="RetentionTime">
+                        <param label="Tolerance" name="metadata_tolerance" type="float" value="0.0"
+                               help="Numerical tolerance for matching."/>
+                    </when>
+                    <when value="RetentionIndex">
+                        <param label="Tolerance" name="metadata_tolerance" type="float" value="0.0"
+                               help="Numerical tolerance for matching."/>
+                    </when>
+                </conditional>
+            </when>
+        </conditional>
+
+        
 
         <section name="algorithm" title="Algorithm Parameters" expanded="true">
             <param label="tolerance" name="tolerance" type="float" value="0.1"
@@ -71,10 +96,6 @@
                    help="The power to raise mz to in the cosine function."/>
             <param label="intensity_power" name="intensity_power" type="float" value="1.0"
                    help="The power to raise intensity to in the cosine function."/>
-            <param label="metadata_field_name" name="metadata_field_name" type="text"
-                   help="metadata_field_name: SMILES, INCHI, etc."/>
-            <param label="matching_type" name="matching_type" type="text" 
-                   help="matching_type: equal_match or difference."/>
         </section>
 
         <conditional name="ri_filtering">

@@ -38,7 +38,6 @@ def main(argv):
     parser.add_argument("output_filename_scores", type=str, help="Path where to store the output .tsv scores.")
     parser.add_argument("output_filename_matches", type=str, help="Path where to store the output .tsv matches.")
     parser.add_argument("metadata_field_name", type=str, help="Field name for metadata that should be compared.")
-    parser.add_argument("matching_type", type=str, help="How field entries should match (equal_match or difference).")
     args = parser.parse_args()
 
     if args.queries_format == 'msp':
@@ -67,10 +66,10 @@ def main(argv):
         reference_spectra = list(map(convert_precursor_mz, reference_spectra))
         queries_spectra = list(map(convert_precursor_mz, queries_spectra))
     elif args.similarity_metric == 'MetadataMatch':
-        if args.matching_type == 'equal_match':
-            similarity_metric = MetadataMatch(args.metadat_field_name, args.matching_type)
-        elif args.matching_type == 'difference':
-            similarity_metric = MetadataMatch(args.metadat_field_name, args.matching_type, args.tolerance)
+        if args.metadata_field_name in ['SMILES', 'InChI', 'Formula', 'Precursor MZ']:
+            similarity_metric = MetadataMatch(args.metadat_field_name, 'equal_match')
+        elif args.matching_type in ['Retention Time', 'Retention Index']:
+            similarity_metric = MetadataMatch(args.metadata_field_name, 'difference', args.tolerance)
     else:
         return -1
 
@@ -82,9 +81,9 @@ def main(argv):
         is_symmetric=args.symmetric
     )
 
-    if args.matching_type == 'difference' and args.ri_tolerance is not None:
+    if args.ri_tolerance is not None:
         print("RI filtering with tolerance ", args.ri_tolerance)
-        ri_matches = calculate_scores(reference_spectra, queries_spectra, MetadataMatch("retention_index", args.matching_type, args.ri_tolerance)).scores
+        ri_matches = calculate_scores(reference_spectra, queries_spectra, MetadataMatch("retention_index", 'difference', args.ri_tolerance)).scores
         scores.scores["score"] = np.where(ri_matches, scores.scores["score"], 0.0)
 
     write_outputs(args, scores)
