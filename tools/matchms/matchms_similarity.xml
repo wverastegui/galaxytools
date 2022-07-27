@@ -1,4 +1,4 @@
-<tool id="matchms" name="matchMS similarity" version="@TOOL_VERSION@+galaxy0" python_template_version="3.8">
+<tool id="matchms" name="matchMS similarity" version="@TOOL_VERSION@+galaxy1" python_template_version="3.8">
     <description>calculate the similarity score and matched peaks</description>
 
     <macros>
@@ -39,7 +39,9 @@
             "$algorithm.mz_power" \
             "$algorithm.intensity_power" \
             "$similarity_scores" \
-            "$similarity_matches"
+            "$similarity_matches" \
+            "$metadata_field_name" \
+            "$matching_type"
         </configfile>
     </configfiles>
 
@@ -59,7 +61,7 @@
             <option value="CosineGreedy" selected="true">CosineGreedy</option>
             <option value="CosineHungarian">CosineHungarian</option>
             <option value="ModifiedCosine">ModifiedCosine</option>
-            <option value="NeutralLossesCosine">NeutralLossesCosine</option>
+            <option value="MetadataMatch">MetadataMatch</option>
         </param>
 
         <section name="algorithm" title="Algorithm Parameters" expanded="true">
@@ -69,6 +71,10 @@
                    help="The power to raise mz to in the cosine function."/>
             <param label="intensity_power" name="intensity_power" type="float" value="1.0"
                    help="The power to raise intensity to in the cosine function."/>
+            <param label="metadata_field_name" name="metadata_field_name" type="text"
+                   help="metadata_field_name: SMILES, INCHI, etc."/>
+            <param label="matching_type" name="matching_type" type="text" 
+                   help="matching_type: equal_match or difference."/>
         </section>
 
         <conditional name="ri_filtering">
@@ -136,13 +142,6 @@
             <param name="similarity_metric" value="CosineGreedy"/>
             <output name="similarity_scores" file="similarity/scores_test6_out.tsv" ftype="tsv"/>
             <output name="similarity_matches" file="similarity/matches_test6_out.tsv" ftype="tsv"/>
-        </test>
-        <test>
-            <param name="references" value="similarity/RECETOX_Exposome_pesticides_HR_MS_20220323.msp" ftype="msp"/>
-            <param name="queries" value="similarity/RECETOX_Exposome_pesticides_HR_MS_20220323.msp" ftype="msp"/>
-            <param name="similarity_metric" value="NeutralLossesCosine"/>
-            <output name="similarity_scores" file="similarity/scores_test7_out.tsv" ftype="tsv"/>
-            <output name="similarity_matches" file="similarity/matches_test7_out.tsv" ftype="tsv"/>
         </test>
     </tests>
 
