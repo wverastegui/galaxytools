@@ -35,9 +35,9 @@ def main(argv):
     parser.add_argument("tolerance", type=float, help="Tolerance to use for peak matching.")
     parser.add_argument("mz_power", type=float, help="The power to raise mz to in the cosine function.")
     parser.add_argument("intensity_power", type=float, help="The power to raise intensity to in the cosine function.")
+    parser.add_argument("metadata_field_name", type=str, help="Field name for metadata that should be compared.")
     parser.add_argument("output_filename_scores", type=str, help="Path where to store the output .tsv scores.")
     parser.add_argument("output_filename_matches", type=str, help="Path where to store the output .tsv matches.")
-    parser.add_argument("metadata_field_name", type=str, help="Field name for metadata that should be compared.")
     args = parser.parse_args()
 
     if args.queries_format == 'msp':

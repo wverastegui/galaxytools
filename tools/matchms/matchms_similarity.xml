@@ -38,9 +38,9 @@
             "$algorithm.tolerance" \
             "$algorithm.mz_power" \
             "$algorithm.intensity_power" \
+            "$metadata_field_name" \
             "$similarity_scores" \
             "$similarity_matches" \
-            "$metadata_field_name" \
         </configfile>
     </configfiles>
 
