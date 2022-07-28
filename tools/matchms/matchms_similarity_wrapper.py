@@ -67,8 +67,8 @@ def main(argv):
         queries_spectra = list(map(convert_precursor_mz, queries_spectra))
     elif args.similarity_metric == 'MetadataMatch':
         if args.metadata_field_name in ['SMILES', 'InChI', 'Formula', 'Precursor MZ']:
-            similarity_metric = MetadataMatch(args.metadat_field_name, 'equal_match')
-        elif args.matching_type in ['Retention Time', 'Retention Index']:
+            similarity_metric = MetadataMatch(args.metadata_field_name, 'equal_match')
+        elif args.metadata_field_name in ['Retention Time', 'Retention Index']:
             similarity_metric = MetadataMatch(args.metadata_field_name, 'difference', args.tolerance)
     else:
         return -1
