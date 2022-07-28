@@ -20,6 +20,15 @@
         </creator>
     </xml>
 
+    <xml name="metric_options">
+        <param label="Tolerance" name="tolerance" type="float" value="0.1"
+               help="Peaks will be considered a match when less than tolerance apart. Absolute m/z value, not in ppm."/>
+        <param label="MZ power" name="mz_power" type="float" value="0.0"
+               help="The power to raise mz to in the cosine function."/>
+        <param label="Intensity power" name="intensity_power" type="float" value="1.0"
+               help="The power to raise intensity to in the cosine function."/>
+     </xml>
+
     <token name="@HELP_matchms@">
         <![CDATA[
             Documentation
