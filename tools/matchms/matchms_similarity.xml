@@ -152,7 +152,6 @@
             <output name="similarity_scores" file="similarity/scores_test6_out.tsv" ftype="tsv"/>
             <output name="similarity_matches" file="similarity/matches_test6_out.tsv" ftype="tsv"/>
         </test>
-
     </tests>
 
     <help>
