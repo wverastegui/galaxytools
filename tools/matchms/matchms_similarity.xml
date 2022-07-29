@@ -152,13 +152,7 @@
             <output name="similarity_scores" file="similarity/scores_test6_out.tsv" ftype="tsv"/>
             <output name="similarity_matches" file="similarity/matches_test6_out.tsv" ftype="tsv"/>
         </test>
-        <!-- <test>
-            <param name="references" value="similarity/recetox_gc-ei_ms_20201028.msp" ftype="msp"/>
-            <param name="queries" value="similarity/recetox_gc-ei_ms_20201028.msp" ftype="msp"/>
-            <param name="similarity_metric" value="MetadataMatch"/>
-            <output name="similarity_scores" file="similarity/" ftype="tsv"/>
-            <output name="similarity_matches" file="similarity/" ftype="tsv"/>
-        </test> -->
+
     </tests>
 
     <help>

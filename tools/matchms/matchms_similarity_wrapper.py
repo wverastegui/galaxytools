@@ -66,9 +66,9 @@ def main(argv):
         reference_spectra = list(map(convert_precursor_mz, reference_spectra))
         queries_spectra = list(map(convert_precursor_mz, queries_spectra))
     elif args.similarity_metric == 'MetadataMatch':
-        if args.metadata_field_name in ['SMILES', 'InChI', 'Formula', 'Precursor MZ']:
-            similarity_metric = MetadataMatch(args.metadata_field_name, 'equal_match')
-        elif args.metadata_field_name in ['Retention Time', 'Retention Index']:
+        if args.metadata_field_name in ['smiles', 'inchi', 'formula', 'precursor_mz']:
+            similarity_metric = MetadataMatch(args.metadata_field_name)
+        elif args.metadata_field_name in ['retention_time', 'retention_index']:
             similarity_metric = MetadataMatch(args.metadata_field_name, 'difference', args.tolerance)
     else:
         return -1
@@ -80,25 +80,25 @@ def main(argv):
         similarity_function=similarity_metric,
         is_symmetric=args.symmetric
     )
+    print('start here', scores)
 
     if args.ri_tolerance is not None:
         print("RI filtering with tolerance ", args.ri_tolerance)
         ri_matches = calculate_scores(reference_spectra, queries_spectra, MetadataMatch("retention_index", 'difference', args.ri_tolerance)).scores
         scores.scores["score"] = np.where(ri_matches, scores.scores["score"], 0.0)
-
+        
     write_outputs(args, scores)
     return 0
-
 
 def write_outputs(args, scores):
     print("Storing outputs...")
     query_names = [spectra.metadata['compound_name'] for spectra in scores.queries]
     reference_names = [spectra.metadata['compound_name'] for spectra in scores.references]
-
+ 
     # Write scores to dataframe
     dataframe_scores = DataFrame(data=[entry["score"] for entry in scores.scores], index=reference_names, columns=query_names)
     dataframe_scores.to_csv(args.output_filename_scores, sep='\t')
-
+    
     # Write number of matches to dataframe
     dataframe_matches = DataFrame(data=[entry["matches"] for entry in scores.scores], index=reference_names, columns=query_names)
     dataframe_matches.to_csv(args.output_filename_matches, sep='\t')
